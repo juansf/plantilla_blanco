@@ -5,20 +5,18 @@ const autoprefixer = require('gulp-autoprefixer');
 const pug = require('gulp-pug');
 const browserSync = require('browser-sync').create();
 const plumber = require ('gulp-plumber');
-
 const reload = browserSync.reload;
-
 // Compile sass files to css
 gulp.task('sass', function () {
-  return gulp.src('./src/sass/style.sass')
+  return gulp.src('./src/sass/style.scss')
       .pipe(plumber())
       .pipe(sass().on('error', sass.logError))
       .pipe(autoprefixer({
-        browsers: ['last 15 versions'],
+        browsers: ['last 6 versions'],
             cascade: false
       }))
       .pipe(gulp.dest('./dirt/css/'))
-      .pipe(browserSync.reload({stream:true}))
+      .pipe(browserSync.stream())
 });
 
 // Compile pug files to html
@@ -31,14 +29,16 @@ gulp.task('pug', () =>{
 });
 
 
-gulp.task('default', ['sass', 'pug'] ,function() {
+gulp.task('default', ['sass','pug'] ,function() {
     browserSync.init({
-        server: {
-            baseDir: "./dirt/"
+        server:  {
+            baseDir: './dirt/'
         }
+        
     });
     gulp.watch("./src/sass/**/*.scss", ['sass']);
-    gulp.watch("./src/pug/**/*.pug").on('change', browserSync.reload);
+    gulp.watch("./src/pug/**/*.pug",['pug']);
+    gulp.watch("./dirt/**/*.html").on('change', browserSync.reload);
 });
 
 
