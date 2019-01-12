@@ -10,7 +10,9 @@ const reload = browserSync.reload;
 gulp.task('sass', function () {
   return gulp.src('./src/sass/style.scss')
       .pipe(plumber())
-      .pipe(sass().on('error', sass.logError))
+      .pipe(sass({
+          
+      }).on('error', sass.logError))
       .pipe(autoprefixer({
         browsers: ['last 6 versions'],
             cascade: false
@@ -23,7 +25,9 @@ gulp.task('sass', function () {
 gulp.task('pug', () =>{
   return gulp.src('./src/pug/*.pug')
     .pipe(plumber())
-    .pipe(pug())
+    .pipe(pug({
+        pretty:true
+    }))
     .pipe(gulp.dest('./dirt/'))
     
 });
